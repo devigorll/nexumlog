@@ -1,0 +1,21 @@
+# Ambiente virtual
+.venv/
+
+# Variáveis de ambiente e credenciais
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Logs
+logs/
+*.log
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db

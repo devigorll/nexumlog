@@ -1,0 +1,10 @@
+# python -m venv .venvs
+# .\.venv\Scripts\Activate.ps1
+
+supabase
+faker
+requests
+python-dotenv
+pandas
+os
+numpy
