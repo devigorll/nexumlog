@@ -1,0 +1,242 @@
+{
+  "name": "Nexumlog",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nexumlog-status-log",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        160,
+        0
+      ],
+      "id": "2200b77e-1303-4434-a8ba-7bb5e30fdfce",
+      "name": "Webhook",
+      "webhookId": "92806e71-b3cb-4cb9-949a-da1a7246fd89"
+    },
+    {
+      "parameters": {
+        "content": "## Nó para disparar email\nEste nó é responsável por: \n\n- Receber Informações de pedidos do Supabase \n- Executar Consulta SQL com o JOIN correto\n- Disparar email com base nas informações retornadas",
+        "width": 608,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -208
+      ],
+      "id": "2abf72c3-b3ca-4a2e-a0fb-6a3956012ef2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -864,
+        0
+      ],
+      "id": "163536e8-c2d8-4a5c-ac2d-53fefb8d16ec",
+      "name": "Temporizador 5m"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    (SELECT json_agg(cliente_id) FROM public.cliente_tb) AS clientes_ids,\n    (SELECT json_agg(veiculo_id) FROM public.veiculo_tb) AS veiculos_ids;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -656,
+        0
+      ],
+      "id": "510a95c1-4ff8-4ffd-81c1-c885cc74a4d9",
+      "name": "Consulta ID cliente e veículo",
+      "credentials": {
+        "postgres": {
+          "id": "Sl2XZGZjgay3F3mC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const clientes_ids = $input.first().json.clientes_ids;\nconst veiculos_ids = $input.first().json.veiculos_ids;\n\nconst destinos_portos_br = [\n    \"Porto de Santos - SP\",\n    \"Porto de Paranaguá - PR\",\n    \"Porto de Itajaí - SC\",\n    \"Porto de Rio Grande - RS\",\n    \"Porto de Suape - PE\",\n    \"Porto de Pecém - CE\",\n    \"Porto de Itaqui - MA\",\n    \"Porto de Chibatão (Manaus) - AM\",\n    \"Porto de Tubarão (Vitória) - ES\",\n    \"Porto de Aratu - BA\"\n];\n\nconst tamanhos_container = [\"20ft\", \"40ft\", \"40ft HC\"];\n\n// Funções auxiliares para sorteio\nconst obter_item_aleatorio = (lista) => lista[Math.floor(Math.random() * lista.length)];\nconst obter_peso_aleatorio = (minimo, maximo) => parseFloat((Math.random() * (maximo - minimo) + minimo).toFixed(2));\nconst obter_status_aleatorio = () => Math.floor(Math.random() * 6) + 1;\n\n// Retorna o objeto formatado no padrão esperado pelo n8n\nreturn [{\n    json: {\n        cliente_id: obter_item_aleatorio(clientes_ids),\n        veiculo_id: obter_item_aleatorio(veiculos_ids),\n        destino: obter_item_aleatorio(destinos_portos_br),\n        tamanho_container: obter_item_aleatorio(tamanhos_container),\n        peso_total_carga_kg: obter_peso_aleatorio(10000.00, 35000.00),\n        status_id: obter_status_aleatorio()\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        0
+      ],
+      "id": "ab0541ce-6ad2-4dd4-a8df-5004d8afe43f",
+      "name": "Cria Pedido"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.pedido_tb (\n    cliente_id, \n    veiculo_id, \n    destino, \n    tamanho_container, \n    peso_total_carga_kg, \n    status_id\n) VALUES (\n    {{ $json.cliente_id }},\n    {{ $json.veiculo_id }},\n    '{{ $json.destino }}',\n    '{{ $json.tamanho_container }}',\n    {{ $json.peso_total_carga_kg }},\n    {{ $json.status_id }}\n)\nRETURNING *;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -224,
+        0
+      ],
+      "id": "813d3676-22e0-4383-bc81-b260c5d088b8",
+      "name": "Insere pedido",
+      "credentials": {
+        "postgres": {
+          "id": "Sl2XZGZjgay3F3mC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n    p.pedido_id,\n    c.razao_social,\n    c.email AS email_cliente,\n    sp.nome_status,\n    sp.descricao AS status_descricao,\n    p.destino,\n    p.tamanho_container,\n    p.peso_total_carga_kg,\n    v.modelo AS veiculo_modelo,\n    v.placa AS veiculo_placa,\n    v.nome_motorista,\n    l.data_hora_mudanca\nFROM public.log_status_pedido_tb l\nJOIN public.pedido_tb p ON l.pedido_id = p.pedido_id\nJOIN public.cliente_tb c ON p.cliente_id = c.cliente_id\nJOIN public.status_pedido_tb sp ON l.status_novo_id = sp.status_id\nLEFT JOIN public.veiculo_tb v ON p.veiculo_id = v.veiculo_id\nWHERE p.pedido_id = {{ $json.body.record.pedido_id }}\nORDER BY l.log_id DESC\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e3822f90-a2b7-473d-a23c-69f09842b9a9",
+      "name": "Consulta novo pedido",
+      "credentials": {
+        "postgres": {
+          "id": "Sl2XZGZjgay3F3mC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "igorcruzlsls@gmail.com",
+        "subject": "=🚚 NexumLog - Atualização do Pedido #{{ $json.pedido_id }} (Status: {{ $json.nome_status }})",
+        "message": "=<div style=\"font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 24px; border-radius: 8px;\">\n    <h2 style=\"color: #0d6efd; margin-top: 0;\">🚚 NexumLog Logistics</h2>\n    <p>Olá, <strong>{{ $json.razao_social }}</strong>!</p>\n    <p>Houve uma atualização no status de rastreamento do seu pedido <strong>#{{ $json.pedido_id }}</strong>.</p>\n    \n    <div style=\"background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0d6efd; margin: 20px 0; border-radius: 4px;\">\n        <p style=\"margin: 0; font-size: 16px;\"><strong>Status Atual:</strong> {{ $json.nome_status }}</p>\n        <p style=\"margin: 5px 0 0 0; font-size: 13px; color: #666;\">{{ $json.status_descricao }}</p>\n    </div>\n\n    <h3 style=\"color: #444; border-bottom: 1px solid #eee; padding-bottom: 8px;\">📋 Detalhes da Carga</h3>\n    <ul style=\"line-height: 1.8; padding-left: 20px;\">\n        <li><strong>Destino:</strong> {{ $json.destino }}</li>\n        <li><strong>Container:</strong> {{ $json.tamanho_container }}</li>\n        <li><strong>Peso Total:</strong> {{ $json.peso_total_carga_kg }} kg</li>\n        <li><strong>Veículo Alocado:</strong> {{ $json.veiculo_modelo }} (Placa: {{ $json.veiculo_placa }})</li>\n        <li><strong>Motorista Responsável:</strong> {{ $json.nome_motorista }}</li>\n    </ul>\n\n    <hr style=\"border: 0; border-top: 1px solid #eee; margin: 25px 0 15px 0;\">\n    <p style=\"font-size: 11px; color: #888; text-align: center; margin: 0;\">\n        Este é um e-mail automático gerado pelo sistema de inteligência logística <strong>NexumLog</strong>.\n    </p>\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "c98b2d2f-d329-479f-a02f-6544e1d3ebe7",
+      "name": "Dispara email",
+      "webhookId": "69131aeb-bb76-4d4b-8fc7-8f680f930736",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B27b24gaHMBtqykP",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Nó para criar pedido\nEste nó é responsável por: \n\n- Criar novo pedido a cada 5 minutos\n- Executar Consulta SQL dos IDs de clientes e veículos\n- Criar novo pedido \n- Inserir novo pedido no banco",
+        "height": 176,
+        "width": 608,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -224
+      ],
+      "id": "1fc1c1cf-1157-48e2-ba75-e905acb9a9c7",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Consulta novo pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Temporizador 5m": {
+      "main": [
+        [
+          {
+            "node": "Consulta ID cliente e veículo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta ID cliente e veículo": {
+      "main": [
+        [
+          {
+            "node": "Cria Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria Pedido": {
+      "main": [
+        [
+          {
+            "node": "Insere pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta novo pedido": {
+      "main": [
+        [
+          {
+            "node": "Dispara email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "269adb97-628e-4b2a-83ee-613c15241fd2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4c6a7d42ec878e26f801a40d00ce923f9707ce0050013d0338112d3ce0c4493"
+  },
+  "nodeGroups": [],
+  "id": "9nTSrdA46I4sARkQ",
+  "tags": []
+}

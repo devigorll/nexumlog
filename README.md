@@ -1,104 +1,72 @@
-Aqui está o `README.md` completo e sem os números, prontinho para o seu repositório:
+# 🚚 NexumLog - Automação e Monitoramento Logístico em Tempo Real
 
-# 🚚 NexumLog - Monitoramento e Automação Logística
+O **NexumLog** é um projeto de engenharia e automação de dados focado no monitoramento e simulação de rotas operacionais para logística de transporte e exportação.
 
-O **NexumLog** é um projeto de portfólio focado na simulação, monitoramento e automação de fluxos operacionais para uma empresa fictícia de transporte e logística internacional.
-
-O objetivo principal é integrar **Supabase (PostgreSQL)**, **Python** e **n8n** para demonstrar um pipeline completo de dados: desde a modelagem relacional, passando pela população automatizada com dados sintéticos, até a automação de processos em tempo real.
+A solução conecta um banco de dados relacional **PostgreSQL (Supabase)** a uma esteira dupla de automação no **n8n**, permitindo a geração contínua de pedidos de transporte simulados e o disparo automático de notificações por e-mail em tempo real via Webhooks e Triggers de banco de dados.
 
 ---
 
-## 🎯 Objetivos do Projeto
+## 🎯 Arquitetura da Solução
 
-* **Modelagem de Dados Relacional:** Construção de tabelas otimizadas no Supabase com suporte a transações, chaves estrangeiras e relacionamentos.
+O ecossistema opera através de duas esteiras conectadas em segundo plano:
 
+1. **Esteira Geradora (Simulação Operacional):**
+   * **Schedule Trigger:** Dispara periodicamente (ex: a cada 5 minutos).
+   * **PostgreSQL Nodes:** Consulta os IDs válidos de clientes e veículos no Supabase e insere um novo pedido simulado na tabela `pedido_tb`.
+   * **JavaScript Code Node:** Executa a lógica de sorteio aleatório de destinos (portos brasileiros), tipos de contêineres (`20ft`, `40ft`, `40ft HC`), peso da carga e status inicial.
 
-* **População de Dados Automatizada:** Scripts Python utilizando a biblioteca `Faker` e a SDK `supabase-py` para simulação de clientes, frota de veículos e pedidos de exportação.
-* **Automação de Workflows:** Integração do banco de dados com workflows no **n8n** via Webhooks e rotinas agendadas para disparo de alertas e atualizações de status.
+2. **Esteira Notificadora (Event-Driven Notifications):**
+   * **PostgreSQL Trigger (`trg_insere_log`):** Identifica novos registros na tabela `pedido_tb` e gera automaticamente o histórico na `log_status_pedido_tb`.
+   * **Webhook Integration:** Consome os eventos de inserção gerados pelo Supabase.
+   * **Enriquecimento & Disparo:** Realiza o `JOIN` relacional entre as tabelas de pedidos, clientes, veículos e status para compor e enviar um e-mail formatado via **Gmail**.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **[Supabase](https://supabase.com/?utm_source=gemini):** Banco de dados PostgreSQL gerenciado na nuvem.
-
-
-* **[Python](https://www.python.org/?utm_source=gemini):** Linguagem utilizada para scripts de conexão, manipulação de dados e geração de dados sintéticos via `Faker`.
-* **[n8n](https://n8n.io/?utm_source=gemini):** Plataforma de automação de fluxo de trabalho (*workflow automation*).
-* **`supabase-py` & `python-dotenv`:** Bibliotecas para integração segura com as APIs do Supabase.
+* **[Supabase](https://supabase.com/):** Banco de dados PostgreSQL gerenciado na nuvem (conexão via Transaction Pooler, porta `6543`).
+* **[n8n](https://n8n.io/):** Plataforma de automação de workflows baseada em nós.
+* **JavaScript (Node.js):** Lógica de geração e sorteio de dados sintéticos dentro do n8n (`snake_case`).
+* **PL/pgSQL:** Funções e Triggers automatizadas para auditoria e logs de alterações no banco de dados.
+* **Python / Jupyter Notebooks:** Carga inicial e população do banco com dados sintéticos (`Faker`).
 
 ---
 
-## 🗄️ Arquitetura do Banco de Dados
+## 🗄️ Modelagem de Dados
 
-O banco foi construído no Supabase com base no arquivo `scripts/script_banco.sql` e contempla as seguintes tabelas:
+O banco de dados relacional é composto por 5 tabelas principais:
 
-1. **`cliente_tb`**: Armazena os dados dos clientes contratantes (Razão Social, CNPJ/CPF, e-mail, telefone, endereço).
-
-
-2. **`veiculo_tb`**: Registro da frota de caminhões (placa, modelo, capacidade de carga em kg, motorista e situação).
-
-
-3. **`status_pedido_tb`**: Tabela de domínio com os status do ciclo de vida da carga (*Aguardando liberação*, *Em carregamento*, *Em transporte*, *Entregue*, *Atrasado*, *Cancelado*).
-
-
-4. **`pedido_tb`**: Registro principal das operações de transporte (cliente, veículo, destino, especificações do container, peso e status).
-
-
-5. **`log_status_pedido_tb`**: Histórico de alterações de status para rastreamento e auditoria.
-
-
+1. **`cliente_tb`**: Cadastro dos clientes contratantes (Razão Social, CNPJ/CPF, e-mail, telefone).
+2. **`veiculo_tb`**: Frota de caminhões cadastrada (placa, modelo, capacidade de carga).
+3. **`status_pedido_tb`**: Tabela de domínio (*Aguardando liberação*, *Em carregamento*, *Em transporte*, *Entregue*, *Atrasado*, *Cancelado*).
+4. **`pedido_tb`**: Registro central dos fretes e especificações da carga.
+5. **`log_status_pedido_tb`**: Tabela de auditoria para histórico e controle de SLA de atualizações.
 
 ---
 
 ## 📁 Estrutura do Repositório
 
-De acordo com a organização do projeto:
-
 ```text
 nexumlog/
-├── config/             # Arquivos de configuração da aplicação
-├── database/           # Notebooks e rotinas de teste de conexão (ex: conexao.ipynb)
-├── logs/               # Registros de execução e auditoria
-├── n8n/                # Workflows e pipelines exportados do n8n
-├── scripts/            # Scripts SQL para criação do banco de dados (script_banco.sql)
-├── .env                # Variáveis de ambiente (ignorado no Git)
-├── .gitignore          # Arquivo para ignorar credenciais e ambiente virtual
-├── README.md           # Documentação do projeto
-└── requirements.txt    # Dependências do projeto Python
-
-```
-
----
-
-## 🚀 Como Executar o Projeto
-
-### 1. Clonar o Repositório e Configurar o Ambiente
-
-```bash
-git clone https://github.com/seu-usuario/nexumlog.git
-cd nexumlog
-
-python -m venv .venv
-source .venv/bin/activate  # No Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-```
-
-### 2. Configurar Variáveis de Ambiente (`.env`)
-
-Crie um arquivo `.env` na raiz do projeto com as credenciais obtidas no dashboard do Supabase:
-
-```env
-SUPABASE_URL=https://seu-projeto.supabase.co
-SUPABASE_KEY=sua-chave-anon-publica
-
-```
-
-### 3. Criar a Estrutura no Supabase
-
-Execute o conteúdo do arquivo `scripts/script_banco.sql` diretamente no **SQL Editor** do painel do Supabase para criar todas as tabelas e chaves estrangeiras.
-
-### 4. Popular o Banco de Dados
-
-Execute os scripts em Python para gerar clientes, veículos e pedidos de teste via `Faker`.
+├── .venv/                   # Ambiente virtual Python
+├── config/                  # Arquivos de configuração do projeto
+├── database/                # Scripts SQL estruturados
+│   ├── DDL/
+│   │   └── estrutura_banco.sql       # Criação de schemas e tabelas
+│   ├── queries/
+│   │   ├── busca_cliente_veiculo.sql # Query de IDs para o gerador n8n
+│   │   └── insere_novo_pedido.sql    # Query de consulta com JOIN para e-mail
+│   └── triggers/
+│       └── trg_insere_log.sql        # Função PL/pgSQL e Trigger de auditoria
+├── logs/                    # Logs de execução e auditoria local
+├── n8n/                     # Artefatos da automação no n8n
+│   ├── scripts/
+│   │   └── cria_pedido.js            # Lógica JS de sorteio e formatação de dados
+│   └── workflows/
+│       └── nexumlog_workflow.json    # Export completo do fluxo para importação
+├── notebooks/
+│   └── popula_banco.ipynb   # Notebook Python para carga inicial via Faker
+├── .env                     # Variáveis de ambiente (ignorado no Git)
+├── .gitignore               # Regras de exclusão do Git
+├── README.md                # Documentação técnica do projeto
+└── requirements.txt         # Dependências Python
