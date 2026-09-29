@@ -1,0 +1,61 @@
+    <!--
+    Este arquivo contém o modelo de e-mail HTML utilizado para enviar relatórios de estoque e volumetria de entregas. 
+    Ele inclui gráficos representando a quantidade de pedidos por estado e por status, além de informações resumidas sobre a operação logística. 
+    O design do e-mail é responsivo e utiliza estilos inline para garantir compatibilidade com diversos clientes de e-mail.
+    -->
+
+
+<div style="font-family: 'Segoe UI', Arial, sans-serif; color: #212529; max-width: 660px; margin: auto; border: 1px solid #e9ecef; border-radius: 12px; background-color: #ffffff; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    
+    <!-- Cabeçalho -->
+    <div style="background-color: #0d6efd; padding: 20px 24px; color: #ffffff;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600;">
+            🚚 NexumLog Logistics
+        </h2>
+        <p style="margin: 4px 0 0 0; font-size: 13px; opacity: 0.9;">
+            Painel Operacional
+        </p>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div style="padding: 24px;">
+        <p style="font-size: 14px; color: #495057; margin-top: 0; margin-bottom: 16px;">
+            Olá, equipe! Segue o resumo analítico da volumetria de entregas na rede de transporte.
+        </p>
+
+        <!-- Card Informativo -->
+        <div style="background-color: #f8f9fa; padding: 14px 16px; border-left: 4px solid #0d6efd; margin-bottom: 28px; border-radius: 4px;">
+            <p style="margin: 0; font-size: 13px; color: #495057; line-height: 1.4;">
+                <strong>📊 Panorama Geral:</strong> Mapeamento por estado de destino e status atual dos pedidos.
+            </p>
+        </div>
+
+        <!-- Seção 1: Gráfico por Estado -->
+        <div style="margin-bottom: 32px;">
+            <h3 style="font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #0d6efd; display: inline-block; padding-bottom: 4px;">
+                📍 Pedidos por Estado de Destino
+            </h3>
+            <div style="background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;">
+                <img src="{{ $json.url_grafico_estado }}" alt="Pedidos por Estado" style="width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;" />
+            </div>
+        </div>
+
+        <!-- Seção 2: Gráfico por Status -->
+        <div style="margin-bottom: 12px;">
+            <h3 style="font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #20c997; display: inline-block; padding-bottom: 4px;">
+                📦 Total de Pedidos por Status
+            </h3>
+            <div style="background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;">
+                <img src="{{ $json.url_grafico_status }}" alt="Total por Status" style="width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;" />
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Rodapé -->
+    <div style="background-color: #f8f9fa; padding: 16px 24px; border-top: 1px solid #e9ecef; text-align: center;">
+        <p style="font-size: 11px; color: #8c98a4; margin: 0;">
+            Este é um e-mail automático gerado pelo sistema de inteligência logística <strong>NexumLog</strong>.
+        </p>
+    </div>
+</div>

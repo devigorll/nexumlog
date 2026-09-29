@@ -1,0 +1,67 @@
+<!--
+Este arquivo contém o modelo de e-mail HTML utilizado para enviar relatórios de pedidos atrasados. Ele inclui informações detalhadas sobre a quantidade total de pedidos atrasados, gráficos representando a concentração de atrasos por estado e uma tabela com os detalhes dos pedidos. O design do e-mail é responsivo e utiliza estilos inline para garantir compatibilidade com diversos clientes de e-mail.        
+-->
+
+<div style="font-family: 'Segoe UI', Arial, sans-serif; color: #212529; max-width: 660px; margin: auto; border: 1px solid #e9ecef; border-radius: 12px; background-color: #ffffff; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    
+    <!-- Cabeçalho -->
+    <div style="background-color: #dc3545; padding: 20px 24px; color: #ffffff;">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600;">
+            🚨 NexumLog Logistics — Alerta de Pedidos Atrasados
+        </h2>
+        <p style="margin: 4px 0 0 0; font-size: 13px; opacity: 0.9;">
+            Relatório de Pendências e Gargalos Operacionais
+        </p>
+    </div>
+
+    <div style="padding: 24px;">
+        <!-- Card Indicator -->
+        <div style="background-color: #fff5f5; padding: 16px; border-left: 4px solid #dc3545; margin-bottom: 28px; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px; color: #bd2130; line-height: 1.4;">
+                <strong>⚠️ Volume Total de Atrasos:</strong> 
+                <span style="font-size: 18px; font-weight: bold; margin-left: 6px; color: #dc3545;">{{ $json.total_pedidos_atrasados }} pedidos</span>
+            </p>
+        </div>
+
+        <!-- Gráfico em Azul -->
+        <div style="margin-bottom: 32px;">
+            <h3 style="font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #0d6efd; display: inline-block; padding-bottom: 4px;">
+                📍 Concentração de Atrasos por Estado
+            </h3>
+            <div style="background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;">
+                <img src="{{ $json.url_grafico_atrasados }}" alt="Atrasos por Estado" style="width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;" />
+            </div>
+        </div>
+
+        <!-- Tabela com a Coluna Destino Adicionada -->
+        <div style="margin-bottom: 12px;">
+            <h3 style="font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 4px;">
+                📋 Relação Geral de Pedidos Atrasados
+            </h3>
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; font-size: 13px; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f8f9fa; color: #495057; text-align: left; border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 10px 12px; font-weight: 600;">ID</th>
+                        <th style="padding: 10px 12px; font-weight: 600;">Razão Social</th>
+                        <th style="padding: 10px 12px; text-align: center; font-weight: 600;">Destino</th>
+                        <th style="padding: 10px 12px; text-align: center; font-weight: 600;">Container</th>
+                        <th style="padding: 10px 12px; text-align: center; font-weight: 600;">Data Criação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ $json.tabela_pedidos_html }}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div style="background-color: #f8f9fa; padding: 16px 24px; border-top: 1px solid #e9ecef; text-align: center;">
+        <p style="font-size: 11px; color: #8c98a4; margin: 0;">
+            Notificação automática gerada pelo módulo de monitoramento de SLAs do <strong>NexumLog</strong>.
+        </p>
+    </div>
+</div>    
+
+
+

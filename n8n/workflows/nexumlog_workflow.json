@@ -130,7 +130,7 @@
     },
     {
       "parameters": {
-        "sendTo": "igorcruzlsls@gmail.com",
+        "sendTo": "fabianoleitesiqueira@gmail.com",
         "subject": "=🚚 NexumLog - Atualização do Pedido #{{ $json.pedido_id }} (Status: {{ $json.nome_status }})",
         "message": "=<div style=\"font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 24px; border-radius: 8px;\">\n    <h2 style=\"color: #0d6efd; margin-top: 0;\">🚚 NexumLog Logistics</h2>\n    <p>Olá, <strong>{{ $json.razao_social }}</strong>!</p>\n    <p>Houve uma atualização no status de rastreamento do seu pedido <strong>#{{ $json.pedido_id }}</strong>.</p>\n    \n    <div style=\"background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0d6efd; margin: 20px 0; border-radius: 4px;\">\n        <p style=\"margin: 0; font-size: 16px;\"><strong>Status Atual:</strong> {{ $json.nome_status }}</p>\n        <p style=\"margin: 5px 0 0 0; font-size: 13px; color: #666;\">{{ $json.status_descricao }}</p>\n    </div>\n\n    <h3 style=\"color: #444; border-bottom: 1px solid #eee; padding-bottom: 8px;\">📋 Detalhes da Carga</h3>\n    <ul style=\"line-height: 1.8; padding-left: 20px;\">\n        <li><strong>Destino:</strong> {{ $json.destino }}</li>\n        <li><strong>Container:</strong> {{ $json.tamanho_container }}</li>\n        <li><strong>Peso Total:</strong> {{ $json.peso_total_carga_kg }} kg</li>\n        <li><strong>Veículo Alocado:</strong> {{ $json.veiculo_modelo }} (Placa: {{ $json.veiculo_placa }})</li>\n        <li><strong>Motorista Responsável:</strong> {{ $json.nome_motorista }}</li>\n    </ul>\n\n    <hr style=\"border: 0; border-top: 1px solid #eee; margin: 25px 0 15px 0;\">\n    <p style=\"font-size: 11px; color: #888; text-align: center; margin: 0;\">\n        Este é um e-mail automático gerado pelo sistema de inteligência logística <strong>NexumLog</strong>.\n    </p>\n</div>",
         "options": {}
@@ -166,6 +166,206 @@
       ],
       "id": "1fc1c1cf-1157-48e2-ba75-e905acb9a9c7",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "sendTo": "fabianoleitesiqueira@gmail.com",
+        "subject": "Relatório Logístico - Visão Geral de Entregas por Estado",
+        "message": "=<div style=\"font-family: 'Segoe UI', Arial, sans-serif; color: #212529; max-width: 660px; margin: auto; border: 1px solid #e9ecef; border-radius: 12px; background-color: #ffffff; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);\">\n    \n    <!-- Cabeçalho -->\n    <div style=\"background-color: #0d6efd; padding: 20px 24px; color: #ffffff;\">\n        <h2 style=\"margin: 0; font-size: 20px; font-weight: 600;\">\n            🚚 NexumLog Logistics\n        </h2>\n        <p style=\"margin: 4px 0 0 0; font-size: 13px; opacity: 0.9;\">\n            Painel Operacional\n        </p>\n    </div>\n\n    <!-- Conteúdo Principal -->\n    <div style=\"padding: 24px;\">\n        <p style=\"font-size: 14px; color: #495057; margin-top: 0; margin-bottom: 16px;\">\n            Olá, equipe! Segue o resumo analítico da volumetria de entregas na rede de transporte.\n        </p>\n\n        <!-- Card Informativo -->\n        <div style=\"background-color: #f8f9fa; padding: 14px 16px; border-left: 4px solid #0d6efd; margin-bottom: 28px; border-radius: 4px;\">\n            <p style=\"margin: 0; font-size: 13px; color: #495057; line-height: 1.4;\">\n                <strong>📊 Panorama Geral:</strong> Mapeamento por estado de destino e status atual dos pedidos.\n            </p>\n        </div>\n\n        <!-- Seção 1: Gráfico por Estado -->\n        <div style=\"margin-bottom: 32px;\">\n            <h3 style=\"font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #0d6efd; display: inline-block; padding-bottom: 4px;\">\n                📍 Pedidos por Estado de Destino\n            </h3>\n            <div style=\"background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;\">\n                <img src=\"{{ $json.url_grafico_estado }}\" alt=\"Pedidos por Estado\" style=\"width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;\" />\n            </div>\n        </div>\n\n        <!-- Seção 2: Gráfico por Status -->\n        <div style=\"margin-bottom: 12px;\">\n            <h3 style=\"font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #20c997; display: inline-block; padding-bottom: 4px;\">\n                📦 Total de Pedidos por Status\n            </h3>\n            <div style=\"background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;\">\n                <img src=\"{{ $json.url_grafico_status }}\" alt=\"Total por Status\" style=\"width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;\" />\n            </div>\n        </div>\n\n    </div>\n\n    <!-- Rodapé -->\n    <div style=\"background-color: #f8f9fa; padding: 16px 24px; border-top: 1px solid #e9ecef; text-align: center;\">\n        <p style=\"font-size: 11px; color: #8c98a4; margin: 0;\">\n            Este é um e-mail automático gerado pelo sistema de inteligência logística <strong>NexumLog</strong>.\n        </p>\n    </div>\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        464
+      ],
+      "id": "93bdc0da-d9c9-4173-8602-a11bada5dca8",
+      "name": "Send a message",
+      "webhookId": "7079255b-ff10-4e9b-b6eb-b5a55d1714f9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B27b24gaHMBtqykP",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Email de relatório de estoque e pedidos\nEste nó é responsável por: \n\n- Executar a query a cada 5 minutos\n- Executar Consulta SQL dos IDs do estoque de produtos\n- Gerar gráfico em js e transformá-lo em img\n- Disparar email para o usuário",
+        "height": 176,
+        "width": 608,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        224
+      ],
+      "id": "94759892-aa2a-4172-8a73-fbdd4d3dffee",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sendTo": "igorcruzlsls@gmail.com",
+        "subject": "NexumLog - 🚨 Alerta Operacional: Pedidos Atrasados por Estado",
+        "message": "=<div style=\"font-family: 'Segoe UI', Arial, sans-serif; color: #212529; max-width: 660px; margin: auto; border: 1px solid #e9ecef; border-radius: 12px; background-color: #ffffff; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);\">\n    \n    <!-- Cabeçalho -->\n    <div style=\"background-color: #dc3545; padding: 20px 24px; color: #ffffff;\">\n        <h2 style=\"margin: 0; font-size: 20px; font-weight: 600;\">\n            🚨 NexumLog Logistics — Alerta de Pedidos Atrasados\n        </h2>\n        <p style=\"margin: 4px 0 0 0; font-size: 13px; opacity: 0.9;\">\n            Relatório de Pendências e Gargalos Operacionais\n        </p>\n    </div>\n\n    <div style=\"padding: 24px;\">\n        <!-- Card Indicator -->\n        <div style=\"background-color: #fff5f5; padding: 16px; border-left: 4px solid #dc3545; margin-bottom: 28px; border-radius: 4px;\">\n            <p style=\"margin: 0; font-size: 14px; color: #bd2130; line-height: 1.4;\">\n                <strong>⚠️ Volume Total de Atrasos:</strong> \n                <span style=\"font-size: 18px; font-weight: bold; margin-left: 6px; color: #dc3545;\">{{ $json.total_pedidos_atrasados }} pedidos</span>\n            </p>\n        </div>\n\n        <!-- Gráfico em Azul -->\n        <div style=\"margin-bottom: 32px;\">\n            <h3 style=\"font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #0d6efd; display: inline-block; padding-bottom: 4px;\">\n                📍 Concentração de Atrasos por Estado\n            </h3>\n            <div style=\"background-color: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px; text-align: center;\">\n                <img src=\"{{ $json.url_grafico_atrasados }}\" alt=\"Atrasos por Estado\" style=\"width: 100%; max-width: 600px; height: auto; display: block; margin: auto; border-radius: 4px;\" />\n            </div>\n        </div>\n\n        <!-- Tabela com a Coluna Destino Adicionada -->\n        <div style=\"margin-bottom: 12px;\">\n            <h3 style=\"font-size: 15px; color: #333; margin: 0 0 12px 0; font-weight: 600; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 4px;\">\n                📋 Relação Geral de Pedidos Atrasados\n            </h3>\n            <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" style=\"border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; font-size: 13px; border-collapse: collapse;\">\n                <thead>\n                    <tr style=\"background-color: #f8f9fa; color: #495057; text-align: left; border-bottom: 2px solid #dee2e6;\">\n                        <th style=\"padding: 10px 12px; font-weight: 600;\">ID</th>\n                        <th style=\"padding: 10px 12px; font-weight: 600;\">Razão Social</th>\n                        <th style=\"padding: 10px 12px; text-align: center; font-weight: 600;\">Destino</th>\n                        <th style=\"padding: 10px 12px; text-align: center; font-weight: 600;\">Container</th>\n                        <th style=\"padding: 10px 12px; text-align: center; font-weight: 600;\">Data Criação</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    {{ $json.tabela_pedidos_html }}\n                </tbody>\n            </table>\n        </div>\n\n    </div>\n\n    <div style=\"background-color: #f8f9fa; padding: 16px 24px; border-top: 1px solid #e9ecef; text-align: center;\">\n        <p style=\"font-size: 11px; color: #8c98a4; margin: 0;\">\n            Notificação automática gerada pelo módulo de monitoramento de SLAs do <strong>NexumLog</strong>.\n        </p>\n    </div>\n</div>    ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        464
+      ],
+      "id": "843eb259-ee28-47d8-b5bd-5a1c0a638819",
+      "name": "Send a message1",
+      "webhookId": "aa5c1bfc-bd69-4368-b87e-b1f6a7306b08",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B27b24gaHMBtqykP",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Email de relatório - Pedidos em atraso\nEste nó é responsável por: \n\n- Executar a query uma vez por dia\n- Executar Consulta SQL dos IDs em atraso\n- Gerar gráfico em js e transformá-lo em img\n- Disparar email para o usuário",
+        "height": 176,
+        "width": 608,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        192,
+        224
+      ],
+      "id": "13bfa3c1-3367-442c-a0c0-f4e831f612f2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -864,
+        464
+      ],
+      "id": "4d33bc1d-2e72-4d9f-ab2e-d84519c39d30",
+      "name": "1D"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  (\n    SELECT json_agg(t_estado) FROM (\n      SELECT \n          TRIM(SPLIT_PART(p.destino, '-', 2)) AS destino, \n          COUNT(*) AS total_pedidos\n      FROM pedido_tb AS p\n      GROUP BY \n          TRIM(SPLIT_PART(p.destino, '-', 2))\n      ORDER BY total_pedidos DESC -- Ordenação decrescente por total\n    ) t_estado\n  ) AS pedidos_por_estado,\n\n  (\n    SELECT json_agg(t_status) FROM (\n      SELECT  \n          s.nome_status,\n          COUNT(*) AS total\n      FROM pedido_tb AS p\n      INNER JOIN status_pedido_tb AS s\n          ON p.status_id = s.status_id\n      GROUP BY \n          s.nome_status\n      ORDER BY total DESC -- Ordenação decrescente por total\n    ) t_status\n  ) AS total_por_status;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -640,
+        464
+      ],
+      "id": "4ea3cbaf-74ff-46d3-8dd6-20a20109298c",
+      "name": "Consulta estoque",
+      "credentials": {
+        "postgres": {
+          "id": "Sl2XZGZjgay3F3mC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// 1. Dados do Gráfico por Estado (Ordenado Decrescente)\nconst pedidosEstado = (item.pedidos_por_estado || []).sort((a, b) => b.total_pedidos - a.total_pedidos);\nconst estados = pedidosEstado.map(i => i.destino);\nconst totalPorEstado = pedidosEstado.map(i => i.total_pedidos);\n\nconst configEstado = {\n  type: 'bar',\n  data: {\n    labels: estados,\n    datasets: [{\n      label: 'Pedidos', // Legenda reativada\n      backgroundColor: '#0d6efd',\n      borderRadius: 6,\n      data: totalPorEstado\n    }]\n  },\n  options: {\n    plugins: {\n      legend: { \n        display: true, // Habilita a legenda\n        position: 'top',\n        labels: { font: { family: 'Arial', size: 12, weight: 'bold' } }\n      },\n      datalabels: {\n        anchor: 'end',\n        align: 'top',\n        color: '#0d6efd',\n        font: { weight: 'bold', size: 12 }\n      }\n    },\n    scales: {\n      x: { grid: { display: false } },\n      y: { grid: { color: '#f0f0f0' }, beginAtZero: true }\n    }\n  }\n};\n\n// 2. Dados do Gráfico de Status (Ordenado Decrescente)\nconst pedidosStatus = (item.total_por_status || []).sort((a, b) => b.total - a.total);\nconst statusLabels = pedidosStatus.map(i => i.nome_status);\nconst totalPorStatus = pedidosStatus.map(i => i.total);\n\nconst configStatus = {\n  type: 'bar',\n  data: {\n    labels: statusLabels,\n    datasets: [{\n      label: 'Total', // Legenda reativada\n      backgroundColor: '#20c997',\n      borderRadius: 6,\n      data: totalPorStatus\n    }]\n  },\n  options: {\n    plugins: {\n      legend: { \n        display: true, // Habilita a legenda\n        position: 'top',\n        labels: { font: { family: 'Arial', size: 12, weight: 'bold' } }\n      },\n      datalabels: {\n        anchor: 'end',\n        align: 'top',\n        color: '#20c997',\n        font: { weight: 'bold', size: 12 }\n      }\n    },\n    scales: {\n      x: { grid: { display: false } },\n      y: { grid: { color: '#f0f0f0' }, beginAtZero: true }\n    }\n  }\n};\n\n// URLs com gráficos grandes e com legendas ativas\nreturn [{\n  json: {\n    ...item,\n    url_grafico_estado: `https://quickchart.io/chart?bkg=white&w=600&h=280&c=${encodeURIComponent(JSON.stringify(configEstado))}`,\n    url_grafico_status: `https://quickchart.io/chart?bkg=white&w=600&h=280&c=${encodeURIComponent(JSON.stringify(configStatus))}`\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        464
+      ],
+      "id": "b6e56e2c-fc80-4f84-ae26-3ca1474d01d1",
+      "name": "Gera gráfico"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        144,
+        464
+      ],
+      "id": "cd788e03-7f01-45c8-8d23-dd7a297d9447",
+      "name": "1D1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  -- 1. Total Geral de Pedidos Atrasados\n  (\n    SELECT COUNT(*) \n    FROM pedido_tb AS p\n    INNER JOIN status_pedido_tb AS s ON p.status_id = s.status_id\n    WHERE s.nome_status = 'Atrasado'\n  ) AS total_pedidos_atrasados,\n\n  -- 2. Dados para o Gráfico (Pedidos Atrasados por Estado)\n  (\n    SELECT json_agg(t_estado) FROM (\n      SELECT \n        TRIM(SPLIT_PART(p.destino, '-', 2)) AS destino, \n        COUNT(*) AS total_atrasados\n      FROM pedido_tb AS p\n      INNER JOIN status_pedido_tb AS s ON p.status_id = s.status_id\n      WHERE s.nome_status = 'Atrasado'\n      GROUP BY TRIM(SPLIT_PART(p.destino, '-', 2))\n      ORDER BY total_atrasados DESC\n    ) t_estado\n  ) AS grafico_atrasados_estado,\n\n  -- 3. Lista para a Tabela de Pedidos Atrasados\n  (\n    SELECT json_agg(t_pedidos) FROM (\n      SELECT \n        p.pedido_id,\n        p.destino,\n        c.razao_social,\n        p.tamanho_container,\n        TO_CHAR(p.data_criacao, 'DD/MM/YYYY') AS data_criacao\n      FROM pedido_tb AS p\n      INNER JOIN status_pedido_tb AS s ON p.status_id = s.status_id\n      INNER JOIN cliente_tb AS c ON p.cliente_id = c.cliente_id\n      WHERE s.nome_status = 'Atrasado'\n      ORDER BY p.data_criacao ASC\n    ) t_pedidos\n  ) AS tabela_pedidos_atrasados;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        368,
+        464
+      ],
+      "id": "8822e653-ae74-4f3d-8cba-d1fe1191d8e4",
+      "name": "Consulta atrasos",
+      "credentials": {
+        "postgres": {
+          "id": "Sl2XZGZjgay3F3mC",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// 1. Tratamento do Total de Pedidos Atrasados\nconst totalAtrasados = item.total_pedidos_atrasados || 0;\n\n// 2. Montagem do Gráfico QuickChart em Azul\nconst dadosGrafico = (item.grafico_atrasados_estado || []).sort((a, b) => b.total_atrasados - a.total_atrasados);\nconst estados = dadosGrafico.map(i => i.destino);\nconst totais = dadosGrafico.map(i => i.total_atrasados);\n\nconst configGrafico = {\n  type: 'bar',\n  data: {\n    labels: estados,\n    datasets: [{\n      label: 'Atrasos',\n      backgroundColor: '#0d6efd', // Azul corporativo\n      borderRadius: 6,\n      data: totais\n    }]\n  },\n  options: {\n    plugins: {\n      legend: { \n        display: true,\n        position: 'top',\n        labels: { font: { family: 'Arial', size: 12, weight: 'bold' } }\n      },\n      datalabels: {\n        anchor: 'end',\n        align: 'top',\n        color: '#0d6efd', // Números em azul\n        font: { weight: 'bold', size: 12 }\n      }\n    },\n    scales: {\n      x: { grid: { display: false } },\n      y: { grid: { color: '#f0f0f0' }, beginAtZero: true }\n    }\n  }\n};\n\n// 3. Montagem Dinâmica do HTML da Tabela\nconst listaPedidos = item.tabela_pedidos_atrasados || [];\nlet linhasTabelaHtml = '';\n\nif (listaPedidos.length === 0) {\n  linhasTabelaHtml = `\n    <tr>\n      <td colspan=\"5\" style=\"padding: 12px; text-align: center; color: #28a745; font-weight: bold;\">\n        Nenhum pedido atrasado no momento! 🎉\n      </td>\n    </tr>`;\n} else {\n  linhasTabelaHtml = listaPedidos.map((pedido, index) => {\n    const bgCor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';\n    return `<tr style=\"background-color: ${bgCor}; border-bottom: 1px solid #e9ecef;\"><td style=\"padding: 10px 12px; font-weight: bold; color: #333;\">#${pedido.pedido_id}</td><td style=\"padding: 10px 12px; color: #495057;\">${pedido.razao_social}</td><td style=\"padding: 10px 12px; color: #495057; text-align: center;\">${pedido.destino}</td><td style=\"padding: 10px 12px; text-align: center; color: #495057;\">${pedido.tamanho_container || 'N/A'}</td><td style=\"padding: 10px 12px; text-align: center; color: #dc3545; font-weight: 500;\">${pedido.data_criacao}</td></tr>`;\n  }).join('');\n}\n\n// 4. Retorno Estruturado para o n8n\nreturn [{\n  json: {\n    ...item,\n    total_pedidos_atrasados: totalAtrasados,\n    url_grafico_atrasados: `https://quickchart.io/chart?bkg=white&w=600&h=280&c=${encodeURIComponent(JSON.stringify(configGrafico))}`,\n    tabela_pedidos_html: linhasTabelaHtml\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        464
+      ],
+      "id": "d7d7b325-c5fc-472c-a772-2c316b378b05",
+      "name": "Gera Gráficos"
+    },
+    {
+      "parameters": {
+        "content": "## Lembrar de trocar o método POST no SUPABASE quando for botar em produção",
+        "height": 80,
+        "width": 800,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        0
+      ],
+      "id": "97133b4c-90be-4c6e-85cf-a250602c4285",
+      "name": "Sticky Note4"
     }
   ],
   "pinData": {},
@@ -224,6 +424,72 @@
           }
         ]
       ]
+    },
+    "1D": {
+      "main": [
+        [
+          {
+            "node": "Consulta estoque",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta estoque": {
+      "main": [
+        [
+          {
+            "node": "Gera gráfico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gera gráfico": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1D1": {
+      "main": [
+        [
+          {
+            "node": "Consulta atrasos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta atrasos": {
+      "main": [
+        [
+          {
+            "node": "Gera Gráficos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gera Gráficos": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -231,7 +497,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "269adb97-628e-4b2a-83ee-613c15241fd2",
+  "versionId": "3f262d87-f69c-4496-9dc4-8af52cc4608e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d4c6a7d42ec878e26f801a40d00ce923f9707ce0050013d0338112d3ce0c4493"
